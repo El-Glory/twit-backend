@@ -8,7 +8,13 @@ const authentication = (req, res, next) => {
             status: statusCodes.unAuthorized,
             error: "Authentication failed"
         })
+        const token = jwt.verify(header, SECRET)
+        req.decode = token;
+        next()
     } catch (error) {
-        
+        return res.status(401).json({
+            status: statusCodes.unAuthorized,
+            error: "Invalid token"
+        })
     }
 }
